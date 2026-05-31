@@ -92,7 +92,7 @@ body{font-family:'Noto Serif JP',serif;background:var(--bg);color:var(--text);mi
     <div class="day-card d1">
       <div class="day-head">
         <div class="dnum">Day 1</div>
-        <div class="dinfo">6/13 sat · 10:00–16:00</div>
+        <div class="dinfo">6/13 sat · 10:00–19:00</div>
       </div>
       <div class="events-list" id="day1-list"></div>
       <div style="padding:0 8px 8px">
@@ -102,7 +102,7 @@ body{font-family:'Noto Serif JP',serif;background:var(--bg);color:var(--text);mi
     <div class="day-card d2">
       <div class="day-head">
         <div class="dnum">Day 2</div>
-        <div class="dinfo">6/14 sun · 10:00–15:30</div>
+        <div class="dinfo">6/14 sun · 10:00–19:00</div>
       </div>
       <div class="events-list" id="day2-list"></div>
       <div style="padding:0 8px 8px">
@@ -130,20 +130,20 @@ body{font-family:'Noto Serif JP',serif;background:var(--bg);color:var(--text);mi
 const state = { day1:[], day2:[] };
 
 const DAY_CONFIG = {
-  day1: { startH:10, startM:0, endH:16, endM:0,  dateStr:'6/13 sat', label:'Day 1' },
-  day2: { startH:10, startM:0, endH:15, endM:30, dateStr:'6/14 sun', label:'Day 2' },
+  day1: { startH:10, startM:0, endH:19, endM:0,  dateStr:'6/13 sat', label:'Day 1' },
+  day2: { startH:10, startM:0, endH:19, endM:0,  dateStr:'6/14 sun', label:'Day 2' },
 };
 
 function genTimes(sh,sm,eh,em){
   const r=[];let h=sh,m=sm;
   while(h<eh||(h===eh&&m<=em)){
     r.push(`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`);
-    m+=30;if(m>=60){m-=60;h++}
+    m+=5;if(m>=60){m-=60;h++}
   }
   return r;
 }
-const T1=genTimes(10,0,16,0);
-const T2=genTimes(10,0,15,30);
+const T1=genTimes(10,0,19,0);
+const T2=genTimes(10,0,19,0);
 
 // ── メジャー8色プリセット ──
 const EV_COLORS = [
@@ -387,7 +387,8 @@ function drawDayCol(ctx, colX, colW, topY, dayKey, events){
     const absMin = startMin + min;
     const hh     = Math.floor(absMin / 60);
     const mm     = absMin % 60;
-    const label  = `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`;
+    const isLast  = hh === 19 && mm === 0;
+    const label  = isLast ? 'ラスト' : `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`;
     const isHour = mm === 0;
 
     // グリッド線 (イベントバーエリアのみ)
